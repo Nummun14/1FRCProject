@@ -8,23 +8,18 @@ import edu.wpi.first.wpilibj2.command.*;
 import java.util.function.Supplier;
 
 public class Steer extends SubsystemBase {
-
-
     private final static Steer INSTANCE = new Steer();
-
-    private final TalonFX motor = frc.trigon.robot.subsystems.steer.SteerConstants.MOTOR;
+    private final TalonFX motor = SteerConstants.MOTOR;
 
     public static Steer getInstance() {
         return INSTANCE;
     }
 
-
     private Steer() {
-
     }
 
     /**
-     * Creates a command that gets a supplier and sets the target angle to its value.
+     * Creates a command that sets the target angle from the given supplier.
      *
      * @param angleSupplier a supplier of the target angle
      * @return the command
@@ -55,13 +50,13 @@ public class Steer extends SubsystemBase {
     }
 
     /**
-     * @return a command that turns to 90 degrees, waits 3 seconds, then turns to 180, waits 3 seconds, and turns back to 0
+     * @return a command that turns to 90 degrees, waits 3 seconds, turns to 180 degrees, waits 3 seconds, and turns back to 0
      */
     public CommandBase getAngleSequenceCommand() {
         return new SequentialCommandGroup(
                 getSetTargetAngleCommand(90).withTimeout(3),
-                getSetTargetAngleCommand(90).withTimeout(3),
-                getSetTargetAngleCommand(180)
+                getSetTargetAngleCommand(180).withTimeout(3),
+                getSetTargetAngleCommand(0)
         );
     }
 
