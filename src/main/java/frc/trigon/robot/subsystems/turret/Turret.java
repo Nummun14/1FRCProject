@@ -22,7 +22,6 @@ public class Turret extends SubsystemBase {
 
     /**
      * Creates a command that checks if there's a visible target, if there isn't, send a voltage request of 5. If there is, calculate the PID power to align to the target.
-     *
      * @param reflectorPixelSupplier the supplier of the position of the target
      * @param hasTarget              if a target is visible
      * @return the command
