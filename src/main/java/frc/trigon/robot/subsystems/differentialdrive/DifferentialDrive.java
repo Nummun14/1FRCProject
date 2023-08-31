@@ -24,11 +24,48 @@ public class DifferentialDrive extends SubsystemBase {
     }
 
     /**
-     * creates a command that sets the voltage for the right motors of the robot from the given supplier.
-     * @param voltage a supplier of the voltage
+     * Creates a command that receives a right motors voltage and a left motors voltage and applies the voltage.
+     * @param rightVoltage the supplier of the right motor voltage
+     * @param leftVoltage the supplier of the left motor voltage
      * @return the command
      */
-    public CommandBase getRightSide(Supplier<Double> voltage){
+    public CommandBase tankDrive(Supplier<Double> rightVoltage, Supplier<Double> leftVoltage){
+        return new FunctionalCommand(
+                () -> {},
+                () -> getLeftSide(leftVoltage).andThen(getRightSide(rightVoltage)),
+                (interrupted) -> stop(),
+                () -> false,
+                this
+        );
+    }
+
+    /**
+     * Creates a command that receives a voltage and if it should be applied to the right or left motors and does so according to the inputted parameters.
+     * @param voltage a supplier of the voltage to be applied
+     * @param isRight a supplier of whether the voltage should be applied to the right motors or not
+     * @return the command
+     */
+    public CommandBase arcadeDrive(Supplier<Double> voltage, Supplier<Boolean> isRight){
+        if (isRight.get()){
+            return new FunctionalCommand(
+                    () -> {},
+                    () -> getRightSide(voltage),
+                    (interrupted) -> stop(),
+                    () -> false,
+                    this
+            );
+        } else {
+            return new FunctionalCommand(
+                    () -> {},
+                    () -> getLeftSide(voltage),
+                    (interrupted) -> stop(),
+                    () -> false,
+                    this
+            );
+        }
+    }
+
+    private CommandBase getRightSide(Supplier<Double> voltage){
         return new FunctionalCommand(
                 () -> {},
                 () -> rightMotorVoltage(voltage.get()),
@@ -38,12 +75,7 @@ public class DifferentialDrive extends SubsystemBase {
         );
     }
 
-    /**
-     * creates a command that sets the voltage for the left motors of the robot from the given supplier.
-     * @param voltage a supplier of the voltage
-     * @return the command
-     */
-    public CommandBase getLeftSide(Supplier<Double> voltage){
+    private CommandBase getLeftSide(Supplier<Double> voltage){
         return new FunctionalCommand(
                 () -> {},
                 () -> leftMotorVoltage(voltage.get()),
