@@ -24,11 +24,21 @@ public class DifferentialDrive extends SubsystemBase {
     private DifferentialDrive() {
     }
 
+    /**
+     * gets a supplier of the forward speed, and a supplier of the turn speed, and uses it in arcade drive.
+     * @param forward a supplier of the forward speed
+     * @param turn a supplier of the turn speed
+     */
     public void arcadeDrive(Supplier<Double> forward, Supplier<Double> turn){
         DifferentialDrive1.arcadeDrive(forward.get(), turn.get());
         DifferentialDrive2.arcadeDrive(forward.get(),turn.get());
     }
 
+    /**
+     * gets a supplier of the left side and a supplier of the right side, and then uses it in tank drive.
+     * @param leftStick a supplier of the left side
+     * @param rightStick a supplier of the right side
+     */
     public void tankDrive(Supplier<Double> leftStick, Supplier<Double> rightStick){
         DifferentialDrive1.tankDrive(leftStick.get(), rightStick.get());
         DifferentialDrive2.tankDrive(leftStick.get(), rightStick.get());
