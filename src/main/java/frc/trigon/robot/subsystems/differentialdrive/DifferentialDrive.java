@@ -14,8 +14,9 @@ public class DifferentialDrive extends SubsystemBase {
     private final TalonFX motor2 = DifferentialDriveConstants.MOTOR2;
     private final TalonFX motor3 = DifferentialDriveConstants.MOTOR3;
     private final TalonFX motor4 = DifferentialDriveConstants.MOTOR4;
+    private final edu.wpi.first.wpilibj.drive.DifferentialDrive DifferentialDrive1 = DifferentialDriveConstants.DIFFERENTIAL_DRIVE1;
+    private final edu.wpi.first.wpilibj.drive.DifferentialDrive DifferentialDrive2 = DifferentialDriveConstants.DIFFERENTIAL_DRIVE2;
     private final static DifferentialDrive INSTANCE = new DifferentialDrive();
-
     public static DifferentialDrive getInstance() {
         return INSTANCE;
     }
@@ -23,85 +24,20 @@ public class DifferentialDrive extends SubsystemBase {
     private DifferentialDrive() {
     }
 
-    /**
-     * Creates a command that receives a right motors voltage and a left motors voltage and applies the voltage.
-     * @param rightVoltage the supplier of the right motor voltage
-     * @param leftVoltage the supplier of the left motor voltage
-     * @return the command
-     */
-    public CommandBase tankDrive(Supplier<Double> rightVoltage, Supplier<Double> leftVoltage){
-        return new FunctionalCommand(
-                () -> {},
-                () -> getLeftSide(leftVoltage).andThen(getRightSide(rightVoltage)),
-                (interrupted) -> stop(),
-                () -> false,
-                this
-        );
+    public void arcadeDrive(Supplier<Double> forward, Supplier<Double> turn){
+        DifferentialDrive1.arcadeDrive(forward.get(), turn.get());
+        DifferentialDrive2.arcadeDrive(forward.get(),turn.get());
     }
 
-    /**
-     * Creates a command that receives a voltage and if it should be applied to the right or left motors and does so according to the inputted parameters.
-     * @param voltage a supplier of the voltage to be applied
-     * @param isRight a supplier of whether the voltage should be applied to the right motors or not
-     * @return the command
-     */
-    public CommandBase arcadeDrive(Supplier<Double> voltage, Supplier<Boolean> isRight){
-        if (isRight.get()){
-            return new FunctionalCommand(
-                    () -> {},
-                    () -> getRightSide(voltage),
-                    (interrupted) -> stop(),
-                    () -> false,
-                    this
-            );
-        } else {
-            return new FunctionalCommand(
-                    () -> {},
-                    () -> getLeftSide(voltage),
-                    (interrupted) -> stop(),
-                    () -> false,
-                    this
-            );
-        }
+    public void tankDrive(Supplier<Double> leftStick, Supplier<Double> rightStick){
+        DifferentialDrive1.tankDrive(leftStick.get(), rightStick.get());
+        DifferentialDrive2.tankDrive(leftStick.get(), rightStick.get());
     }
 
-    private CommandBase getRightSide(Supplier<Double> voltage){
-        return new FunctionalCommand(
-                () -> {},
-                () -> rightMotorVoltage(voltage.get()),
-                (interrupted) -> stop(),
-                () -> false,
-                this
-        );
-    }
 
-    private CommandBase getLeftSide(Supplier<Double> voltage){
-        return new FunctionalCommand(
-                () -> {},
-                () -> leftMotorVoltage(voltage.get()),
-                (interrupted) -> stop(),
-                () -> false,
-                this
-        );
-    }
 
-    private void rightMotorVoltage(double voltage){
-        VoltageOut request = new VoltageOut(voltage);
-        motor1.setControl(request);
-        motor2.setControl(request);
-    }
 
-    private void leftMotorVoltage(double voltage){
-        VoltageOut request = new VoltageOut(voltage);
-        motor3.setControl(request);
-        motor4.setControl(request);
-    }
 
-    private void stop(){
-        motor1.stopMotor();
-        motor2.stopMotor();
-        motor3.stopMotor();
-        motor4.stopMotor();
-    }
+
 }
 

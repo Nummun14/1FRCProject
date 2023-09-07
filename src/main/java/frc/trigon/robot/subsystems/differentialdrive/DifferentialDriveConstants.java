@@ -5,6 +5,7 @@ import com.ctre.phoenixpro.hardware.TalonFX;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class DifferentialDriveConstants {
 
@@ -18,6 +19,8 @@ public class DifferentialDriveConstants {
     static final TalonFX MOTOR2 = new TalonFX(MOTOR2_ID);
     static final TalonFX MOTOR3 = new TalonFX(MOTOR3_ID);
     static final TalonFX MOTOR4 = new TalonFX(MOTOR4_ID);
+    static final DifferentialDrive DIFFERENTIAL_DRIVE1 = new DifferentialDrive(MOTOR1, MOTOR2);
+    static final DifferentialDrive DIFFERENTIAL_DRIVE2 = new DifferentialDrive(MOTOR3, MOTOR4);
     static final double GEAR_RATIO = 12.8;
 
     static final double
