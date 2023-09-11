@@ -53,18 +53,18 @@ public class DifferentialDrive extends SubsystemBase {
     }
 
     /**
-     * gets a supplier of the forward speed, a supplier of the turn speed, and a supplier that checks if stationaryTurn is being used and uses it in arcade drive.
+     * gets a supplier of the forward speed, a supplier of the turn speed, and a supplier that checks if turn in place is being used and uses it in arcade drive.
      *
      * @param forward        a supplier of the forward speed
      * @param turn           a supplier of the turn speed
-     * @param stationaryTurn a supplier of that checks if stationary drive is being used
+     * @param allowTurnInPlace a supplier of that checks if turn in place is used
      * @return the command
      */
-    public CommandBase curvatureDriveCommand(Supplier<Double> forward, Supplier<Double> turn, Supplier<Boolean> stationaryTurn) {
+    public CommandBase curvatureDriveCommand(Supplier<Double> forward, Supplier<Double> turn, Supplier<Boolean> allowTurnInPlace) {
         return new FunctionalCommand(
                 () -> {
                 },
-                () -> curvatureDrive(forward.get(), turn.get(), stationaryTurn.get()),
+                () -> curvatureDrive(forward.get(), turn.get(), allowTurnInPlace.get()),
                 (interrupted) -> stop(),
                 () -> false,
                 this
@@ -79,8 +79,8 @@ public class DifferentialDrive extends SubsystemBase {
         DifferentialDrive1.tankDrive(leftStick, rightStick);
     }
 
-    private void curvatureDrive(double forward, double turn, boolean stationaryTurn) {
-        DifferentialDrive1.curvatureDrive(forward, turn, stationaryTurn);
+    private void curvatureDrive(double forward, double turn, boolean allowTurnInPlace) {
+        DifferentialDrive1.curvatureDrive(forward, turn, allowTurnInPlace);
     }
 
     private void stop() {
