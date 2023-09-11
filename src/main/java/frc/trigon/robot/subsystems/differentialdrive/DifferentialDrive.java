@@ -55,8 +55,8 @@ public class DifferentialDrive extends SubsystemBase {
     /**
      * gets a supplier of the forward speed, a supplier of the turn speed, and a supplier that checks if turn in place is being used and uses it in arcade drive.
      *
-     * @param forward        a supplier of the forward speed
-     * @param turn           a supplier of the turn speed
+     * @param forward          a supplier of the forward speed
+     * @param turn             a supplier of the turn speed
      * @param allowTurnInPlace a supplier of that checks if turn in place is used
      * @return the command
      */
