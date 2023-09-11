@@ -38,8 +38,8 @@ public class DifferentialDrive extends SubsystemBase {
     /**
      * gets a supplier of the left side and a supplier of the right side, and then uses it in tank drive.
      *
-     * @param leftStick  a supplier of the left side
-     * @param rightStick a supplier of the right side
+     * @param leftStick  a supplier of the left side speed
+     * @param rightStick a supplier of the right side speed
      */
     public CommandBase tankDriveCommand(Supplier<Double> rightStick, Supplier<Double> leftStick) {
         return new FunctionalCommand(
