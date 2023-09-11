@@ -29,7 +29,7 @@ public class DifferentialDrive extends SubsystemBase {
      * @param forward a supplier of the forward speed
      * @param turn a supplier of the turn speed
      */
-    public CommandBase arcadeDrive(Supplier<Double> forward, Supplier<Double> turn){
+    public CommandBase arcadeDriveCommand(Supplier<Double> forward, Supplier<Double> turn){
         return new FunctionalCommand(
                 () -> {},
                 () -> arcadeDrive(forward.get(), turn.get()),
@@ -44,7 +44,7 @@ public class DifferentialDrive extends SubsystemBase {
      * @param leftStick a supplier of the left side
      * @param rightStick a supplier of the right side
      */
-    public CommandBase tankDrive(Supplier<Double> rightStick, Supplier<Double> leftStick){
+    public CommandBase tankDriveCommand(Supplier<Double> rightStick, Supplier<Double> leftStick){
         return new FunctionalCommand(
                 () -> {},
                 () -> tankDrive(rightStick.get(), leftStick.get()),
