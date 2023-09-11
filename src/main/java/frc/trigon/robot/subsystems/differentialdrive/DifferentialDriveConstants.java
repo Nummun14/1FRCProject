@@ -20,18 +20,10 @@ public class DifferentialDriveConstants {
     static final TalonFX MOTOR2 = new TalonFX(MOTOR2_ID);
     static final TalonFX MOTOR3 = new TalonFX(MOTOR3_ID);
     static final TalonFX MOTOR4 = new TalonFX(MOTOR4_ID);
-
     static final MotorControllerGroup MOTOR_CONTROLLER_GROUP_RIGHT = new MotorControllerGroup(MOTOR1, MOTOR2);
     static final MotorControllerGroup MOTOR_CONTROLLER_GROUP_LEFT = new MotorControllerGroup(MOTOR3, MOTOR4);
     static final DifferentialDrive DIFFERENTIAL_DRIVE1 = new DifferentialDrive(MOTOR_CONTROLLER_GROUP_LEFT, MOTOR_CONTROLLER_GROUP_RIGHT);
-    static final double GEAR_RATIO = 12.8;
 
-    static final double
-            P = 1,
-            I = 0,
-            D = 0;
-
-    static final PIDController PID_CONTROLLER = new PIDController(P, I, D);
 
     static {
         TalonFXConfiguration config = new TalonFXConfiguration();
