@@ -29,9 +29,14 @@ public class DifferentialDrive extends SubsystemBase {
      * @param forward a supplier of the forward speed
      * @param turn a supplier of the turn speed
      */
-    public void arcadeDrive(Supplier<Double> forward, Supplier<Double> turn){
-        DifferentialDrive1.arcadeDrive(forward.get(), turn.get());
-        DifferentialDrive2.arcadeDrive(forward.get(),turn.get());
+    public CommandBase arcadeDrive(Supplier<Double> forward, Supplier<Double> turn){
+        return new FunctionalCommand(
+                () -> {},
+                () -> arcadeDrive(forward.get(), turn.get()),
+                (interrupted) -> stop(),
+                () -> false,
+                this
+        );
     }
 
     /**
@@ -39,9 +44,29 @@ public class DifferentialDrive extends SubsystemBase {
      * @param leftStick a supplier of the left side
      * @param rightStick a supplier of the right side
      */
-    public void tankDrive(Supplier<Double> leftStick, Supplier<Double> rightStick){
-        DifferentialDrive1.tankDrive(leftStick.get(), rightStick.get());
-        DifferentialDrive2.tankDrive(leftStick.get(), rightStick.get());
+    public CommandBase tankDrive(Supplier<Double> rightStick, Supplier<Double> leftStick){
+        return new FunctionalCommand(
+                () -> {},
+                () -> tankDrive(rightStick.get(), leftStick.get()),
+                (interrupted) -> stop(),
+                () -> false,
+                this
+        );
+    }
+
+    private void arcadeDrive(double forward, double turn){
+        DifferentialDrive1.arcadeDrive(forward, turn);
+        DifferentialDrive2.arcadeDrive(forward,turn);
+    }
+
+    private void tankDrive(double leftStick, double rightStick){
+        DifferentialDrive1.tankDrive(leftStick, rightStick);
+        DifferentialDrive2.tankDrive(leftStick, rightStick);
+    }
+
+    private void stop(){
+        DifferentialDrive1.stopMotor();
+        DifferentialDrive2.stopMotor();
     }
 
 
