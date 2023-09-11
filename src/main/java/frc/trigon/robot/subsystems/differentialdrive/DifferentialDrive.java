@@ -1,8 +1,6 @@
 package frc.trigon.robot.subsystems.differentialdrive;
 
 
-import com.ctre.phoenixpro.controls.VoltageOut;
-import com.ctre.phoenixpro.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -10,13 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.Supplier;
 
 public class DifferentialDrive extends SubsystemBase {
-    private final TalonFX motor1 = DifferentialDriveConstants.MOTOR1;
-    private final TalonFX motor2 = DifferentialDriveConstants.MOTOR2;
-    private final TalonFX motor3 = DifferentialDriveConstants.MOTOR3;
-    private final TalonFX motor4 = DifferentialDriveConstants.MOTOR4;
     private final edu.wpi.first.wpilibj.drive.DifferentialDrive DifferentialDrive1 = DifferentialDriveConstants.DIFFERENTIAL_DRIVE1;
-    private final edu.wpi.first.wpilibj.drive.DifferentialDrive DifferentialDrive2 = DifferentialDriveConstants.DIFFERENTIAL_DRIVE2;
     private final static DifferentialDrive INSTANCE = new DifferentialDrive();
+
     public static DifferentialDrive getInstance() {
         return INSTANCE;
     }
@@ -26,10 +20,11 @@ public class DifferentialDrive extends SubsystemBase {
 
     /**
      * gets a supplier of the forward speed, and a supplier of the turn speed, and uses it in arcade drive.
+     *
      * @param forwardSpeed a supplier of the forward speed
-     * @param turnSpeed a supplier of the turn speed
+     * @param turnSpeed    a supplier of the turn speed
      */
-    public CommandBase arcadeDriveCommand(Supplier<Double> forwardSpeed, Supplier<Double> turnSpeed){
+    public CommandBase arcadeDriveCommand(Supplier<Double> forwardSpeed, Supplier<Double> turnSpeed) {
         return new FunctionalCommand(
                 () -> {},
                 () -> arcadeDrive(forwardSpeed.get(), turnSpeed.get()),
@@ -41,10 +36,11 @@ public class DifferentialDrive extends SubsystemBase {
 
     /**
      * gets a supplier of the left side and a supplier of the right side, and then uses it in tank drive.
-     * @param leftStick a supplier of the left side
+     *
+     * @param leftStick  a supplier of the left side
      * @param rightStick a supplier of the right side
      */
-    public CommandBase tankDriveCommand(Supplier<Double> rightStick, Supplier<Double> leftStick){
+    public CommandBase tankDriveCommand(Supplier<Double> rightStick, Supplier<Double> leftStick) {
         return new FunctionalCommand(
                 () -> {},
                 () -> tankDrive(leftStick.get(), rightStick.get()),
@@ -54,24 +50,38 @@ public class DifferentialDrive extends SubsystemBase {
         );
     }
 
-    private void arcadeDrive(double forward, double turn){
+    /**
+     * gets a supplier of the forward speed, and a supplier of the turn speed, and a supplier that checks if stationaryTurn is being used and uses it in arcade drive.
+     * @param forward a supplier of the forward speed
+     * @param turn a supplier of the turn speed
+     * @param stationaryTurn a supplier of that checks if stairionary drive is being used
+     * @return the command
+     */
+    public CommandBase curvatureDriveCommand(Supplier<Double> forward, Supplier<Double> turn, Supplier<Boolean> stationaryTurn){
+        return new FunctionalCommand(
+                () -> {},
+                () -> curvatureDrive(forward.get(), turn.get(), stationaryTurn.get()),
+                (interrupted) -> stop(),
+                () -> false,
+                this
+        );
+    }
+
+    private void arcadeDrive(double forward, double turn) {
         DifferentialDrive1.arcadeDrive(forward, turn);
-        DifferentialDrive2.arcadeDrive(forward,turn);
     }
 
-    private void tankDrive(double leftStick, double rightStick){
+    private void tankDrive(double leftStick, double rightStick) {
         DifferentialDrive1.tankDrive(leftStick, rightStick);
-        DifferentialDrive2.tankDrive(leftStick, rightStick);
     }
 
-    private void stop(){
+    private void curvatureDrive(double forward, double turn, boolean stationaryTurn){
+        DifferentialDrive1.curvatureDrive(forward, turn, stationaryTurn);
+    }
+
+    private void stop() {
         DifferentialDrive1.stopMotor();
-        DifferentialDrive2.stopMotor();
     }
-
-
-
-
 
 
 }
