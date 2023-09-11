@@ -54,7 +54,7 @@ public class DifferentialDrive extends SubsystemBase {
      * gets a supplier of the forward speed, and a supplier of the turn speed, and a supplier that checks if stationaryTurn is being used and uses it in arcade drive.
      * @param forward a supplier of the forward speed
      * @param turn a supplier of the turn speed
-     * @param stationaryTurn a supplier of that checks if stairionary drive is being used
+     * @param stationaryTurn a supplier of that checks if stationary drive is being used
      * @return the command
      */
     public CommandBase curvatureDriveCommand(Supplier<Double> forward, Supplier<Double> turn, Supplier<Boolean> stationaryTurn){
