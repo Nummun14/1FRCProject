@@ -31,36 +31,41 @@ public class SideShooterSubsystem extends SubsystemBase {
      * @param state The desired side shooter state to set and shoot.
      * @return A CommandBase for setting the target angle and shooting.
      */
-    public CommandBase getSetTargetAngleAndShoot(SideShooterConstants.sideShooterStates state) {
+    public CommandBase getSideShooterState(SideShooterConstants.sideShooterStates state) {
         return new SequentialCommandGroup(
-                getSetTargetAngle(state).until(() -> angleMotor.getPosition().getValue() == state.angle / 360)
+                getSetTargetAngle(state.voltage).until(() -> getPosition() == state.angle / 360),
+                getSetShootVoltage(state.voltage)
         );
     }
 
-    private CommandBase getShoot(SideShooterConstants.sideShooterStates state) {
+    private CommandBase getSetShootVoltage(double voltage) {
         return new StartEndCommand(
-                () -> shoot(state),
+                () -> setShootVoltage(voltage),
                 this::stopShootingMotor,
                 this
         );
     }
 
-    private CommandBase getSetTargetAngle(SideShooterConstants.sideShooterStates state) {
+    private CommandBase getSetTargetAngle(double voltage) {
         return new StartEndCommand(
-                () -> setTargetAngle(state),
+                () -> setTargetAngle(voltage),
                 this::stopAngleMotor,
                 this
         );
     }
 
-    private void setTargetAngle(SideShooterConstants.sideShooterStates state) {
-        PositionVoltage anglePosition = new PositionVoltage(state.voltage);
+    private void setTargetAngle(double voltage) {
+        PositionVoltage anglePosition = new PositionVoltage(voltage);
         angleMotor.setControl(anglePosition);
     }
 
-    private void shoot(SideShooterConstants.sideShooterStates state) {
-        VoltageOut voltage = new VoltageOut(state.voltage);
-        shootingMotor.setControl(voltage);
+    private void setShootVoltage(double voltage) {
+        VoltageOut request = new VoltageOut(voltage);
+        shootingMotor.setControl(request);
+    }
+
+    private double getPosition() {
+        return angleMotor.getPosition().getValue();
     }
 
     private void stopShootingMotor() {
